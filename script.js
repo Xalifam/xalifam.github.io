@@ -77,6 +77,7 @@ function success(position) {
 
 function error() {
   alert("Sorry, no position available.");
+  document.getElementById("checkCoords").disabled = false;
 }
 
 
