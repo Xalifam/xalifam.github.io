@@ -1,5 +1,3 @@
-
-  // Suppose you have an array of image filenames:
   const images = [
     'Slide1.jpg', 'Slide2.jpg', 'Slide3.jpg', 'Slide4.jpg', 'Slide5.jpg', 
     'Slide6.jpg', 'Slide7.jpg', 'Slide8.jpg', 'Slide9.jpg', 'Slide10.jpg',
@@ -19,7 +17,7 @@
     page.id = 'page' + (i + 1);
 
     const image = document.createElement('img');
-    image.src = "/pages/" + img;
+    image.src = "pages/" + img;
     image.alt = `Page ${i + 1}`;
 	
 	
