@@ -1,12 +1,12 @@
   const images = [
-    'Slide1.jpg', 'Slide2.jpg', 'Slide3.jpg', 'Slide4.jpg', 'Slide5.jpg', 
-    'Slide6.jpg', 'Slide7.jpg', 'Slide8.jpg', 'Slide9.jpg', 'Slide10.jpg',
-    'Slide11.jpg', 'Slide12.jpg', 'Slide13.jpg', 'Slide14.jpg', 'Slide15.jpg',
-    'Slide16.jpg', 'Slide17.jpg', 'Slide18.jpg', 'Slide19.jpg', 'Slide20.jpg',
-    'Slide21.jpg', 'Slide22.jpg', 'Slide23.jpg', 'Slide24.jpg', 'Slide25.jpg',
-    'Slide26.jpg', 'Slide27.jpg', 'Slide28.jpg', 'Slide29.jpg', 'Slide30.jpg',
-    'Slide31.jpg', 'Slide32.jpg', 'Slide33.jpg', 'Slide34.jpg', 'Slide35.jpg',
-    'Slide36.jpg', 'Slide37.jpg', 'Slide38.jpg'
+    'Slide1.JPG', 'Slide2.JPG', 'Slide3.JPG', 'Slide4.JPG', 'Slide5.JPG', 
+    'Slide6.JPG', 'Slide7.JPG', 'Slide8.JPG', 'Slide9.JPG', 'Slide10.JPG',
+    'Slide11.JPG', 'Slide12.JPG', 'Slide13.JPG', 'Slide14.JPG', 'Slide15.JPG',
+    'Slide16.JPG', 'Slide17.JPG', 'Slide18.JPG', 'Slide19.JPG', 'Slide20.JPG',
+    'Slide21.JPG', 'Slide22.JPG', 'Slide23.JPG', 'Slide24.JPG', 'Slide25.JPG',
+    'Slide26.JPG', 'Slide27.JPG', 'Slide28.JPG', 'Slide29.JPG', 'Slide30.JPG',
+    'Slide31.JPG', 'Slide32.JPG', 'Slide33.JPG', 'Slide34.JPG', 'Slide35.JPG',
+    'Slide36.JPG', 'Slide37.JPG', 'Slide38.JPG'
 ];
 
   const book = document.getElementById('book');
