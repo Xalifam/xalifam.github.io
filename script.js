@@ -1,9 +1,14 @@
+console.log("hi");
 const pages = document.querySelectorAll('.page');
 const x = document.getElementById("demo");
+const stamps = document.querySelectorAll('.stamp')
+let foundArray = [];
 let data = [];
-let current = 0;
-let watchId;
+let current = 1;
+console.log("current: " + current);
 
+// Data gathering
+// For the hut coordinates.
 fetch('data.csv')
   .then(response => response.text())
   .then(csvText => {
@@ -17,34 +22,86 @@ fetch('data.csv')
     console.error('Error fetching CSV:', error);
   });
  
+// Get found data.
+const found = localStorage.getItem('found');
 
-function flipNext() {
-  if (current < pages.length-1) {
-    pages[current].classList.add('flipped');
-    current++;
+if (found) {
+  console.log('Data already exists!');
+  foundArray = JSON.parse(found);
+  console.log(foundArray);
+} else {
+  console.log('No data found — initializing new array.');
+  foundArray = Array(pages.length).fill(0);
+  localStorage.setItem('found', JSON.stringify(foundArray));
+}
+ 
+function updateImages() {
+  //x.innerHTML = current;
+  for (let i = 0; i < pages.length; i++) {
+	// Make stamps visible
+	if (foundArray[i] === 1) {
+		stamps[i].classList.add('visible');
+	} else {
+		stamps[i].classList.remove('visible');
+	}
+	 
+	// Add pages after each other 
+    //console.log(pages[i]);
+	if (current === i || current - 1=== i) {
+		pages[i].classList.remove('flipped');
+		if (!(i+1 === pages.length)) {
+			pages[i+1].classList.remove('flipped');
+		}
+    } else {
+		pages[i].classList.add('flipped');
+	}
   }
 }
 
-function flipPrev() {
-  if (current > 0) {
+function updateFound() {
+	localStorage.setItem('found', JSON.stringify(foundArray));
+	updateImages();
+}
+
+updateImages();
+
+function flipNext(n) {
+  if (n < pages.length) {
+    current++;
+	updateImages();
+  }
+}
+
+function flipPrev(n) {
+  if (n > 1) {
     current--;
-    pages[current].classList.remove('flipped');
+    updateImages();
   }
 }
 
 // coordinate stuff
-function checkCoords() {
+function checkCoords(n) {
   document.getElementById("checkCoords").disabled = true;
   x.innerHTML = "Laden..."
-  if (navigator.geolocation) {
-    navigator.geolocation.getCurrentPosition(success, error, {maximumAge: 25000, enableHighAccuracy: true,timeout: 5000});
-  } else { 
-    x.innerHTML = "Geolocation is not supported by this browser.";
-	document.getElementById("checkCoords").disabled = false;
+  if (foundArray[n-1] === 0) {
+    if (navigator.geolocation) {
+      navigator.geolocation.getCurrentPosition((position) => success(position, n), error, {maximumAge: 25000, enableHighAccuracy: true,timeout: 5000});
+    } else { 
+      x.innerHTML = "Geolocation is not supported by this browser.";
+	  document.getElementById("checkCoords").disabled = false;
+    }
+  } else {
+	  alert("Hütta al gevonden!")
+	  document.getElementById("checkCoords").disabled = false;
+	  x.innerHTML = ""
   }
 }
+  
 
 function areCoordsClose(lat1, lon1, lat2, lon2, maxDistanceMeters = 50) {
+  console.log("1: " + lat1 + " - " + lon1);
+  console.log("2: " + lat2 + " - " + lon2);
+  
   const toRad = x => x * Math.PI / 180;
 
   const R = 6371000; // Earth's radius in meters
@@ -63,15 +120,17 @@ function areCoordsClose(lat1, lon1, lat2, lon2, maxDistanceMeters = 50) {
   return distance <= maxDistanceMeters;
 }
 
-function success(position) {
+function success(position, n) {
   x.innerHTML = "Latitude: " + position.coords.latitude + 
   "<br>Longitude: " + position.coords.longitude;
   document.getElementById("checkCoords").disabled = false;
   
-  if (areCoordsClose(position.coords.latitude, position.coords.longitude, data[current][0], data[current][1], maxDistanceMeters = 50)) {
-	  alert("Hütta is in de buurt.");
+  if (areCoordsClose(position.coords.latitude, position.coords.longitude, data[current-1][0], data[current-1][1], maxDistanceMeters = 50)) {
+	  foundArray[n-1] = 1;
+	  updateFound();
+	  x.innerHTML = "Hütta is in de buurt.";
   } else{
-	  alert("Hier is geen Hütta");
+	  x.innerHTML = "Hier is geen Hütta";
   }
 }
 
@@ -80,36 +139,62 @@ function error() {
   document.getElementById("checkCoords").disabled = false;
 }
 
+//Delete local storage data.
+function deleteData () {
+	localStorage.clear();
+	foundArray = Array(pages.length).fill(0);
+	x.innerHTML = "Data verwijderd."
+	updateImages();
+}
 
  
 // Button support
-document.getElementById('nextBtn').addEventListener('click', flipNext);
-document.getElementById('prevBtn').addEventListener('click', flipPrev);
-document.getElementById('checkCoords').addEventListener('click', checkCoords);
+document.getElementById('nextBtn').addEventListener('click', () => { flipNext(current);});
+document.getElementById('prevBtn').addEventListener('click', () => { flipPrev(current);});
+document.getElementById('delete').addEventListener('click', deleteData);
+document.getElementById('checkCoords').addEventListener('click', () => { checkCoords(current);});
 
 // Touchscreen swipe support
-let touchStartX = 0;
-let touchEndX = 0;
-const threshold = 50; // Minimum distance to detect swipe
+const container = document.querySelector('.book-container');
 
-document.querySelector('.book-container').addEventListener('touchstart', (e) => {
+let touchStartX = 0;
+let touchStartY = 0;
+let touchEndX = 0;
+let touchEndY = 0;
+const threshold = 50; // minimum distance for swipe
+const restraint = 150; // max vertical movement allowed
+
+container.addEventListener('touchstart', (e) => {
   touchStartX = e.changedTouches[0].screenX;
+  touchStartY = e.changedTouches[0].screenY;
 }, false);
 
-document.querySelector('.book-container').addEventListener('touchend', (e) => {
+container.addEventListener('touchmove', (e) => {
+  // Prevent vertical scroll if horizontal movement dominates
+  const diffX = Math.abs(e.changedTouches[0].screenX - touchStartX);
+  const diffY = Math.abs(e.changedTouches[0].screenY - touchStartY);
+
+  if (diffX > diffY) {
+    e.preventDefault(); // stops scrolling
+  }
+}, { passive: false }); // must be false to use preventDefault
+
+container.addEventListener('touchend', (e) => {
   touchEndX = e.changedTouches[0].screenX;
+  touchEndY = e.changedTouches[0].screenY;
   handleSwipe();
 }, false);
 
 function handleSwipe() {
-  const swipeDistance = touchEndX - touchStartX;
-  if (Math.abs(swipeDistance) > threshold) {
-    if (swipeDistance < 0) {
-      // Swipe left → Next
-      flipNext();
+  const distX = touchEndX - touchStartX;
+  const distY = touchEndY - touchStartY;
+
+  // Only handle horizontal swipes
+  if (Math.abs(distX) > threshold && Math.abs(distY) < restraint) {
+    if (distX < 0) {
+      flipNext(current); // swipe left
     } else {
-      // Swipe right → Previous
-      flipPrev();
+      flipPrev(current); // swipe right
     }
   }
 }

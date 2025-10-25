@@ -20,8 +20,15 @@
     image.src = "pages/" + img;
     image.alt = `Page ${i + 1}`;
 	
+	const stamp = document.createElement('img');
+    stamp.src = "stamp.png";
+	stamp.className = 'stamp';
+    stamp.alt = `Hütta stempel`;
+	//stamp.style.transform = `rotate(${Math.random() * 20 - 10}deg)`;
 	
-    page.appendChild(image);
+	
+    page.appendChild(stamp);
+	page.appendChild(image);
     book.appendChild(page);
 	page.style.zIndex = images.length-i;
   });
