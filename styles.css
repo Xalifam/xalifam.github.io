@@ -13,7 +13,7 @@ li {
 }
 
 .check-coords {
-	width: 95vw;
+	max-width: 95vw;
 	aspect-ratio: 1/0.1;
 	font-size: x-large;
 }
@@ -24,9 +24,9 @@ li {
 
 .book {
   position: relative;
-  width: 95vw;
-  aspect-ratio: 1/1.416;
-
+  aspect-ratio: 1 / 1.416;
+  height: 70vh;
+  max-width: 95vw;
 }
 
 .page {
@@ -55,6 +55,7 @@ li {
   opacity: 0.8;  /* optional: slightly transparent */
   pointer-events: none; /* so clicks go through to the page */
   visibility: hidden;
+  backface-visibility: hidden;
 }
 
 .stamp.visible {
