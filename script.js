@@ -4,8 +4,7 @@ const x = document.getElementById("demo");
 const stamps = document.querySelectorAll('.stamp')
 let foundArray = [];
 let data = [];
-let current = 1;
-console.log("current: " + current);
+
 
 // Data gathering
 // For the hut coordinates.
@@ -21,7 +20,22 @@ fetch('data.csv')
   .catch(error => {
     console.error('Error fetching CSV:', error);
   });
- 
+
+// Get current data
+let current = localStorage.getItem('current');
+
+if (current) {
+  console.log('Current Data already exists!');
+  current = JSON.parse(current);
+  console.log(current);
+} else {
+  console.log('No Current data found — initializing new array.');
+  current = 1
+  localStorage.setItem('current', JSON.stringify(current));
+}
+
+console.log("current: " + current);
+
 // Get found data.
 const found = localStorage.getItem('found');
 
@@ -56,6 +70,7 @@ function updateImages() {
 		pages[i].classList.add('flipped');
 	}
   }
+  localStorage.setItem('current', JSON.stringify(current))
 }
 
 function updateFound() {
