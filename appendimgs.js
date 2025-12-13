@@ -42,6 +42,13 @@
 		page.appendChild(stampindex);
 	}
 	
+	if (i === 1) {
+		const pointcounter = document.createElement('p')
+		pointcounter.className = 'pointcounter';
+		//pointcounter.innerHTML = "Punkte: 0";
+		page.appendChild(pointcounter);
+	}
+	
     book.appendChild(page);
 	page.style.zIndex = images.length-i;
   });

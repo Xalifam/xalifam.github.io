@@ -1,11 +1,17 @@
-console.log("hi");
 const pages = document.querySelectorAll('.page');
 const x = document.getElementById("demo");
+const pointcounter = document.querySelector(".pointcounter")
 const stamps = document.querySelectorAll('.stamp')
 const tinystamps = document.querySelectorAll('.tinystamp')
-console.log(tinystamps);
+
 let foundArray = [];
 let data = [];
+let tpa = [];
+let totalpoints = 0;
+
+console.log("hi");
+//console.log(pointcounter);
+//console.log(tinystamps);
 
 
 // Data gathering
@@ -22,6 +28,10 @@ fetch('data.csv')
   .catch(error => {
     console.error('Error fetching CSV:', error);
   });
+  
+// Points Array
+const points = [0,0,0,0,0,25,25,25,75,50,75,50,50,100,150,100,100,100,25,75,50,100,25,50,75,100,150,100,25,25,50,75,100,50,50,75,150,0];
+//console.log(points);
 
 // Get current data
 let current = localStorage.getItem('current');
@@ -29,14 +39,13 @@ let current = localStorage.getItem('current');
 if (current) {
   console.log('Current Data already exists!');
   current = JSON.parse(current);
-  console.log(current);
 } else {
   console.log('No Current data found — initializing new array.');
   current = 1
   localStorage.setItem('current', JSON.stringify(current));
 }
 
-console.log("current: " + current);
+console.log("current page: " + current);
 
 // Get found data.
 const found = localStorage.getItem('found');
@@ -44,7 +53,7 @@ const found = localStorage.getItem('found');
 if (found) {
   console.log('Data already exists!');
   foundArray = JSON.parse(found);
-  console.log(foundArray);
+  //console.log(foundArray);
 } else {
   console.log('No data found — initializing new array.');
   foundArray = Array(pages.length).fill(0);
@@ -62,7 +71,6 @@ function updateImages() {
 		stamps[i].classList.remove('visible');
 		tinystamps[i-5]?.classList.remove('visible');
 	}
-	 
 	// Add pages after each other 
     //console.log(pages[i]);
 	if (current === i || current - 1=== i) {
@@ -75,6 +83,16 @@ function updateImages() {
 	}
   }
   localStorage.setItem('current', JSON.stringify(current))
+  
+  // Count total points.
+	tpa = points.map((v, i) => v * foundArray[i]);
+	totalpoints = tpa.reduce((total, num) => total + (Number(num) || 0), 0);
+	pointcounter.innerHTML = "Punkte: " + totalpoints;
+
+  
+  // Logger
+  console.log(totalpoints);
+  console.log(foundArray);
 }
 
 function updateFound() {
@@ -147,7 +165,7 @@ function success(position, n) {
   if (areCoordsClose(position.coords.latitude, position.coords.longitude, data[current-1][0], data[current-1][1], maxDistanceMeters = 50)) {
 	  foundArray[n-1] = 1;
 	  updateFound();
-	  x.innerHTML = "Hütta is in de buurt.";
+	  x.innerHTML = "Hütta gevonden!";
   } else{
 	  x.innerHTML = "Hier is geen Hütta";
   }
@@ -173,12 +191,20 @@ function addData () {
 	x.innerHTML = "Data toegevoegd."
 	updateImages();
 }
+
+function add1Data () {
+	foundArray[current-1] = 1;
+	updateFound();
+	x.innerHTML = "Hütta gevonden!";
+	updateImages();
+}
  
 // Button support
 document.getElementById('nextBtn').addEventListener('click', () => { flipNext(current);});
 document.getElementById('prevBtn').addEventListener('click', () => { flipPrev(current);});
 document.getElementById('delete').addEventListener('click', deleteData);
 document.getElementById('add').addEventListener('click', addData);
+document.getElementById('add1').addEventListener('click', add1Data);
 document.getElementById('checkCoords').addEventListener('click', () => { checkCoords(current);});
 
 // Touchscreen swipe support

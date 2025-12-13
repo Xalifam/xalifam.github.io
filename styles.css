@@ -91,6 +91,14 @@ button {
 	visibility: visible;
 }
 
+.pointcounter {
+	position: absolute;
+	font-size: 500%;
+	left: 8%;
+	bottom: 10%;
+	
+}
+
 
 /* Keyframes for stamping effect */
 @keyframes stampDown {
