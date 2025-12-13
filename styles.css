@@ -10,10 +10,17 @@ body {
 
 li {
   display: inline;
+  max-width: 95vw;
+}
+
+button {
+	max-width: 50vw;
+	aspect-ratio: 1/0.1;
+	font-size: large;
 }
 
 .check-coords {
-	max-width: 95vw;
+	max-width: 95vw !important;
 	aspect-ratio: 1/0.1;
 	font-size: x-large;
 }
@@ -24,9 +31,9 @@ li {
 
 .book {
   position: relative;
-  aspect-ratio: 1 / 1.416;
-  height: 70vh;
-  max-width: 95vw;
+  width: 95vw;
+  aspect-ratio: 1 / 1.410;
+  max-width: 2000px;
 }
 
 .page {
@@ -42,15 +49,15 @@ li {
 .page img {
   width: 100%;
   height: 100%;
-  object-fit: cover;
+  object-fit: contain;
 }
 
 .stamp {
   position: absolute;
   display: block;
-  bottom: 2%;  /* distance from bottom edge */
-  right: 30%;  /* distance from right edge */
-  width: 40% !important;   /* size of the stamp */
+  bottom: 3.5%;  /* distance from bottom edge */
+  right: 34%;  /* distance from right edge */
+  width: 36% !important;   /* size of the stamp */
   height: auto !important;  /* keep aspect ratio */
   opacity: 0.8;  /* optional: slightly transparent */
   pointer-events: none; /* so clicks go through to the page */
@@ -62,6 +69,28 @@ li {
 	visibility: visible;
 	animation: stampDown 1s forwards;
 }
+
+.stampindex {
+  position: absolute;
+  height: 75%;
+  bottom: 7.5%;  /* distance from bottom edge */
+  right: 33%;  /* distance from right edge */
+  display: flex;
+  flex-direction: column; /* stack vertically */
+  align-items: center;    /* center horizontally */
+  gap: 0.05%;              /* space between images */
+}
+
+.tinystamp {
+	height: 6.25% !important;
+	width: auto !important;
+	visibility: hidden;
+}
+
+.tinystamp.visible {
+	visibility: visible;
+}
+
 
 /* Keyframes for stamping effect */
 @keyframes stampDown {

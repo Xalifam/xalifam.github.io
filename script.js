@@ -2,6 +2,8 @@ console.log("hi");
 const pages = document.querySelectorAll('.page');
 const x = document.getElementById("demo");
 const stamps = document.querySelectorAll('.stamp')
+const tinystamps = document.querySelectorAll('.tinystamp')
+console.log(tinystamps);
 let foundArray = [];
 let data = [];
 
@@ -55,8 +57,10 @@ function updateImages() {
 	// Make stamps visible
 	if (foundArray[i] === 1) {
 		stamps[i].classList.add('visible');
+		tinystamps[i-5]?.classList.add('visible');
 	} else {
 		stamps[i].classList.remove('visible');
+		tinystamps[i-5]?.classList.remove('visible');
 	}
 	 
 	// Add pages after each other 
@@ -162,11 +166,19 @@ function deleteData () {
 	updateImages();
 }
 
+//Add all storage data.
+function addData () {
+	foundArray = Array(pages.length).fill(1,5);
+	updateFound();
+	x.innerHTML = "Data toegevoegd."
+	updateImages();
+}
  
 // Button support
 document.getElementById('nextBtn').addEventListener('click', () => { flipNext(current);});
 document.getElementById('prevBtn').addEventListener('click', () => { flipPrev(current);});
 document.getElementById('delete').addEventListener('click', deleteData);
+document.getElementById('add').addEventListener('click', addData);
 document.getElementById('checkCoords').addEventListener('click', () => { checkCoords(current);});
 
 // Touchscreen swipe support

@@ -19,16 +19,29 @@
     const image = document.createElement('img');
     image.src = "pages/" + img;
     image.alt = `Page ${i + 1}`;
+	page.appendChild(image);
 	
 	const stamp = document.createElement('img');
-    stamp.src = "stamp.png";
+	stamp.src = "stamp.png";
 	stamp.className = 'stamp';
-    stamp.alt = `Hütta stempel`;
-	//stamp.style.transform = `rotate(${Math.random() * 20 - 10}deg)`;
+	stamp.alt = `Hütta stempel`;
+	page.appendChild(stamp);
 	
+	if (i === 3 || i === 4) {
+		const stampindex = document.createElement('div')
+		stampindex.className = 'stampindex';
+		
+		for (let i = 0; i < 16; i++) {
+			const tinystamp = document.createElement('img');
+			tinystamp.src = 'stamp.png';
+			tinystamp.id = i;
+			tinystamp.className = 'tinystamp';
+			stampindex.appendChild(tinystamp)
+		}
+		
+		page.appendChild(stampindex);
+	}
 	
-    page.appendChild(stamp);
-	page.appendChild(image);
     book.appendChild(page);
 	page.style.zIndex = images.length-i;
   });
