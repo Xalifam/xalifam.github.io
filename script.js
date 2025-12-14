@@ -22,7 +22,7 @@ fetch('data.csv')
     const rows = csvText.trim().split('\n');
     data = rows.slice(1).map(row => row.split(','));
 	data = data.map(row => row.map(Number));
-    console.log(data);
+    //console.log(data);
 	
   })
   .catch(error => {
@@ -61,7 +61,6 @@ if (found) {
 }
  
 function updateImages() {
-  //x.innerHTML = current;
   for (let i = 0; i < pages.length; i++) {
 	// Make stamps visible
 	if (foundArray[i] === 1) {
@@ -88,11 +87,17 @@ function updateImages() {
 	tpa = points.map((v, i) => v * foundArray[i]);
 	totalpoints = tpa.reduce((total, num) => total + (Number(num) || 0), 0);
 	pointcounter.innerHTML = "Punkte: " + totalpoints;
+	if (totalpoints > 1200) {
+		pointcounter.style.color = "DarkGoldenRod";
+	} else {
+		pointcounter.style.color = "black"
+	}
 
   
   // Logger
-  console.log(totalpoints);
-  console.log(foundArray);
+  //x.innerHTML = current;
+  //console.log(totalpoints);
+  //console.log(foundArray);
 }
 
 function updateFound() {
@@ -116,6 +121,12 @@ function flipPrev(n) {
   }
 }
 
+function flipQuick(n) {
+	current = n;
+	updateImages();
+}
+
+
 // coordinate stuff
 function checkCoords(n) {
   document.getElementById("checkCoords").disabled = true;
@@ -128,9 +139,8 @@ function checkCoords(n) {
 	  document.getElementById("checkCoords").disabled = false;
     }
   } else {
-	  alert("Hütta al gevonden!")
+	  x.innerHTML = "Hütta is al gevonden!"
 	  document.getElementById("checkCoords").disabled = false;
-	  x.innerHTML = ""
   }
 }
   
@@ -200,12 +210,24 @@ function add1Data () {
 }
  
 // Button support
+	// Quick travel buttons
+document.getElementById('indexBtn').addEventListener('click', () => {flipQuick(4);});
+document.getElementById('brixenBtn').addEventListener('click', () => {flipQuick(6);});
+document.getElementById('sollBtn').addEventListener('click', () => {flipQuick(19);});
+document.getElementById('scheffauBtn').addEventListener('click', () => {flipQuick(23);});
+document.getElementById('ellmauBtn').addEventListener('click', () => {flipQuick(30);});
+document.getElementById('westendorfBtn').addEventListener('click', () => {flipQuick(34);});
+
+	// next and previous
 document.getElementById('nextBtn').addEventListener('click', () => { flipNext(current);});
 document.getElementById('prevBtn').addEventListener('click', () => { flipPrev(current);});
+	// check coords button
+document.getElementById('checkCoords').addEventListener('click', () => { checkCoords(current);});
+
 document.getElementById('delete').addEventListener('click', deleteData);
 document.getElementById('add').addEventListener('click', addData);
 document.getElementById('add1').addEventListener('click', add1Data);
-document.getElementById('checkCoords').addEventListener('click', () => { checkCoords(current);});
+
 
 // Touchscreen swipe support
 const container = document.querySelector('.book-container');

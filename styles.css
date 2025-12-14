@@ -5,7 +5,7 @@ body {
   flex-direction: column;
   align-items: center;
   margin: 0;
-  padding: 50px;
+  padding: 0px;
 }
 
 li {
@@ -17,6 +17,10 @@ button {
 	max-width: 50vw;
 	aspect-ratio: 1/0.1;
 	font-size: large;
+}
+
+#demo {
+  font-size: large;
 }
 
 .check-coords {
@@ -93,12 +97,31 @@ button {
 
 .pointcounter {
 	position: absolute;
-	font-size: 500%;
+	font-size: 6vh;
 	left: 8%;
-	bottom: 10%;
-	
+	bottom: 0.5%;
 }
 
+.nav-item {
+  display: flex;
+  list-style: none;
+  width: 95vw !important;
+  max-width: 100%;
+  min-height: 5%;
+  gap: 0.1rem;
+  box-sizing: border-box;
+}
+
+.nav-item button {
+  flex: 1 1 auto;
+  min-width: 0;    /* IMPORTANT: allows text to shrink */
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis; /* optional: "…" if too small */
+  padding: 0.01rem 0.1rem;
+  min-height: 1.25rem;
+  font-size: clamp(0.6rem, 3.44vw, 3rem);
+}
 
 /* Keyframes for stamping effect */
 @keyframes stampDown {
