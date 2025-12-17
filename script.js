@@ -68,10 +68,11 @@ if (storagetoken) {
     console.log('storage token incorrect — initializing new data.');
     storagetoken = token;
     localStorage.setItem('token', JSON.stringify(token));
-}
+  }
 
 } else {
   console.log('No storage token data found — initializing new data.');
+  deletedata();
   storagetoken = token;
   localStorage.setItem('token', JSON.stringify(token));
 }
