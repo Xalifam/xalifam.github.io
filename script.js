@@ -4,6 +4,19 @@ const pointcounter = document.querySelector(".pointcounter")
 const stamps = document.querySelectorAll('.stamp')
 const tinystamps = document.querySelectorAll('.tinystamp')
 
+const params = new URLSearchParams(window.location.search);
+const token = 1
+
+if (params.has('reset')) {
+  localStorage.clear();
+  params.delete('reset');
+  const newUrl =
+    window.location.pathname +
+    (params.toString() ? `?${params}` : '');
+
+  window.location.replace(newUrl);
+}
+
 let foundArray = [];
 let data = [];
 let tpa = [];
@@ -35,6 +48,7 @@ const points = [0,0,0,0,0,25,25,25,75,50,75,50,50,100,150,100,100,100,25,75,50,1
 
 // Get current data
 let current = localStorage.getItem('current');
+let storagetoken = localStorage.getItem('token')
 
 if (current) {
   console.log('Current Data already exists!');
@@ -44,6 +58,25 @@ if (current) {
   current = 1
   localStorage.setItem('current', JSON.stringify(current));
 }
+
+// Get token data.
+if (storagetoken) {
+  console.log('Storage token data already exists!');
+  storagetoken = JSON.parse(storagetoken);
+  if (token !== storagetoken) {
+    deleteData();
+    console.log('storage token incorrect — initializing new data.');
+    storagetoken = token;
+    localStorage.setItem('token', JSON.stringify(token));
+}
+
+} else {
+  console.log('No storage token data found — initializing new data.');
+  storagetoken = token;
+  localStorage.setItem('token', JSON.stringify(token));
+}
+
+
 
 console.log("current page: " + current);
 
@@ -61,6 +94,8 @@ if (found) {
 }
  
 function updateImages() {
+	//Reset the text bubble.
+	x.innerHTML = ""
   for (let i = 0; i < pages.length; i++) {
 	// Make stamps visible
 	if (foundArray[i] === 1) {
@@ -87,10 +122,14 @@ function updateImages() {
 	tpa = points.map((v, i) => v * foundArray[i]);
 	totalpoints = tpa.reduce((total, num) => total + (Number(num) || 0), 0);
 	pointcounter.innerHTML = "Punkte: " + totalpoints;
-	if (totalpoints > 1200) {
+	if (totalpoints >= 1275) {
 		pointcounter.style.color = "DarkGoldenRod";
+	} else if (totalpoints >= 850){
+		pointcounter.style.color = "DarkGray"
+	} else if (totalpoints >= 425) {
+		pointcounter.style.color = "Sienna"		
 	} else {
-		pointcounter.style.color = "black"
+		pointcounter.style.color = "black"		
 	}
 
   
@@ -98,6 +137,17 @@ function updateImages() {
   //x.innerHTML = current;
   //console.log(totalpoints);
   //console.log(foundArray);
+}
+
+if (params.has('reset')) {
+  deleteData();
+  
+  params.delete('reset');
+  const newUrl =
+    window.location.pathname +
+    (params.toString() ? `?${params}` : '');
+
+  window.location.replace(newUrl);
 }
 
 function updateFound() {
@@ -139,7 +189,7 @@ function checkCoords(n) {
 	  document.getElementById("checkCoords").disabled = false;
     }
   } else {
-	  x.innerHTML = "Hütta is al gevonden!"
+	  x.innerHTML = "Hütta al gevonden!"
 	  document.getElementById("checkCoords").disabled = false;
   }
 }
@@ -168,8 +218,7 @@ function areCoordsClose(lat1, lon1, lat2, lon2, maxDistanceMeters = 50) {
 }
 
 function success(position, n) {
-  x.innerHTML = "Latitude: " + position.coords.latitude + 
-  "<br>Longitude: " + position.coords.longitude;
+  x.innerHTML = "Latitude: " + position.coords.latitude + "<br>Longitude: " + position.coords.longitude;
   document.getElementById("checkCoords").disabled = false;
   
   if (areCoordsClose(position.coords.latitude, position.coords.longitude, data[current-1][0], data[current-1][1], maxDistanceMeters = 50)) {
@@ -177,12 +226,12 @@ function success(position, n) {
 	  updateFound();
 	  x.innerHTML = "Hütta gevonden!";
   } else{
-	  x.innerHTML = "Hier is geen Hütta";
+	  x.innerHTML = "Geen Hütta!";
   }
 }
 
 function error() {
-  alert("Sorry, no position available.");
+  x.innerHTML = "GPS is te langzaam. Probeer het nog eens.";
   document.getElementById("checkCoords").disabled = false;
 }
 
@@ -224,11 +273,11 @@ document.getElementById('prevBtn').addEventListener('click', () => { flipPrev(cu
 	// check coords button
 document.getElementById('checkCoords').addEventListener('click', () => { checkCoords(current);});
 
-/* Admin stuff 
+/* Admin stuff
 document.getElementById('delete').addEventListener('click', deleteData);
 document.getElementById('add').addEventListener('click', addData);
 document.getElementById('add1').addEventListener('click', add1Data);
-*/
+ */
 
 // Touchscreen swipe support
 const container = document.querySelector('.book-container');
