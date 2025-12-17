@@ -5,7 +5,7 @@ const stamps = document.querySelectorAll('.stamp')
 const tinystamps = document.querySelectorAll('.tinystamp')
 
 const params = new URLSearchParams(window.location.search);
-const token = 1
+const token = 0
 
 if (params.has('reset')) {
   localStorage.clear();
@@ -59,15 +59,7 @@ if (current) {
   localStorage.setItem('current', JSON.stringify(current));
 }
 
-// //Get token data.
-//		//Delete local storage data.
-function deleteData () {
-	localStorage.clear();
-	foundArray = Array(pages.length).fill(0);
-	x.innerHTML = "Data verwijderd."
-	updateImages();
-}
-
+// Get token data.
 if (storagetoken) {
   console.log('Storage token data already exists!');
   storagetoken = JSON.parse(storagetoken);
@@ -80,7 +72,7 @@ if (storagetoken) {
 
 } else {
   console.log('No storage token data found — initializing new data.');
-  deletedata();
+  deleteData();
   storagetoken = token;
   localStorage.setItem('token', JSON.stringify(token));
 }
@@ -242,6 +234,14 @@ function success(position, n) {
 function error() {
   x.innerHTML = "GPS is te langzaam. Probeer het nog eens.";
   document.getElementById("checkCoords").disabled = false;
+}
+
+//Delete local storage data.
+function deleteData () {
+	localStorage.clear();
+	foundArray = Array(pages.length).fill(0);
+	x.innerHTML = "Data verwijderd."
+	updateImages();
 }
 
 //Add all storage data.
