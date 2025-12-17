@@ -133,7 +133,7 @@ function checkCoords(n) {
   x.innerHTML = "Laden..."
   if (foundArray[n-1] === 0) {
     if (navigator.geolocation) {
-      navigator.geolocation.getCurrentPosition((position) => success(position, n), error, {maximumAge: 25000, enableHighAccuracy: true,timeout: 5000});
+      navigator.geolocation.getCurrentPosition((position) => success(position, n), error, {maximumAge: 20000, enableHighAccuracy: true, timeout: 5000});
     } else { 
       x.innerHTML = "Geolocation is not supported by this browser.";
 	  document.getElementById("checkCoords").disabled = false;
@@ -215,7 +215,7 @@ document.getElementById('indexBtn').addEventListener('click', () => {flipQuick(4
 document.getElementById('brixenBtn').addEventListener('click', () => {flipQuick(6);});
 document.getElementById('sollBtn').addEventListener('click', () => {flipQuick(19);});
 document.getElementById('scheffauBtn').addEventListener('click', () => {flipQuick(23);});
-document.getElementById('ellmauBtn').addEventListener('click', () => {flipQuick(30);});
+document.getElementById('ellmauBtn').addEventListener('click', () => {flipQuick(29);});
 document.getElementById('westendorfBtn').addEventListener('click', () => {flipQuick(34);});
 
 	// next and previous
@@ -224,10 +224,11 @@ document.getElementById('prevBtn').addEventListener('click', () => { flipPrev(cu
 	// check coords button
 document.getElementById('checkCoords').addEventListener('click', () => { checkCoords(current);});
 
+/* Admin stuff 
 document.getElementById('delete').addEventListener('click', deleteData);
 document.getElementById('add').addEventListener('click', addData);
 document.getElementById('add1').addEventListener('click', add1Data);
-
+*/
 
 // Touchscreen swipe support
 const container = document.querySelector('.book-container');
