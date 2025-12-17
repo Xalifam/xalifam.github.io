@@ -59,7 +59,15 @@ if (current) {
   localStorage.setItem('current', JSON.stringify(current));
 }
 
-// Get token data.
+// //Get token data.
+//		//Delete local storage data.
+function deleteData () {
+	localStorage.clear();
+	foundArray = Array(pages.length).fill(0);
+	x.innerHTML = "Data verwijderd."
+	updateImages();
+}
+
 if (storagetoken) {
   console.log('Storage token data already exists!');
   storagetoken = JSON.parse(storagetoken);
@@ -234,14 +242,6 @@ function success(position, n) {
 function error() {
   x.innerHTML = "GPS is te langzaam. Probeer het nog eens.";
   document.getElementById("checkCoords").disabled = false;
-}
-
-//Delete local storage data.
-function deleteData () {
-	localStorage.clear();
-	foundArray = Array(pages.length).fill(0);
-	x.innerHTML = "Data verwijderd."
-	updateImages();
 }
 
 //Add all storage data.
