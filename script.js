@@ -5,17 +5,7 @@ const stamps = document.querySelectorAll('.stamp')
 const tinystamps = document.querySelectorAll('.tinystamp')
 
 const params = new URLSearchParams(window.location.search);
-const token = 0
-
-if (params.has('reset')) {
-  localStorage.clear();
-  params.delete('reset');
-  const newUrl =
-    window.location.pathname +
-    (params.toString() ? `?${params}` : '');
-
-  window.location.replace(newUrl);
-}
+const token = 7;
 
 let foundArray = [];
 let data = [];
@@ -144,6 +134,17 @@ if (params.has('reset')) {
   deleteData();
   
   params.delete('reset');
+  const newUrl =
+    window.location.pathname +
+    (params.toString() ? `?${params}` : '');
+
+  window.location.replace(newUrl);
+}
+
+if (params.has('Seraph7')) {
+  add1Data();
+  
+  params.delete('Seraph7');
   const newUrl =
     window.location.pathname +
     (params.toString() ? `?${params}` : '');
