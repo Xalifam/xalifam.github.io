@@ -324,4 +324,4 @@ function handleSwipe() {
       flipPrev(current); // swipe right
     }
   }
-}}
+}
