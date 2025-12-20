@@ -185,7 +185,7 @@ function checkCoords(n) {
   x.innerHTML = "Laden..."
   if (foundArray[n-1] === 0) {
     if (navigator.geolocation) {
-      navigator.geolocation.getCurrentPosition((position) => success(position, n), error, {maximumAge: 20000, enableHighAccuracy: true, timeout: 5000});
+      navigator.geolocation.getCurrentPosition((position) => success(position, n), error, {maximumAge: 2000, enableHighAccuracy: true, timeout: 5000});
     } else { 
       x.innerHTML = "Geolocation is not supported by this browser.";
 	  document.getElementById("checkCoords").disabled = false;
@@ -324,4 +324,4 @@ function handleSwipe() {
       flipPrev(current); // swipe right
     }
   }
-}
+}}
