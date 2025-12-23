@@ -239,8 +239,8 @@ function error() {
 
 //Delete local storage data.
 function deleteData () {
-	localStorage.clear();
-	foundArray = Array(pages.length).fill(0);
+	//localStorage.clear();
+	//foundArray = Array(pages.length).fill(0);
 	x.innerHTML = "Data verwijderd."
 	updateImages();
 }
@@ -325,3 +325,4 @@ function handleSwipe() {
     }
   }
 }
+
